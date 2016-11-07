@@ -1,0 +1,17 @@
+#!/bin/sh
+# Danny Nguyen - Lab 3
+
+# Strips an HTML Webpage http://mauimapp.com/moolelo/hwnwdseng.htm to grab all Hawaiian words
+
+grep -e '<td>' | # Locates all lines with a <td> tag
+sed 's/<[^>]*>//g' | # Removes all remaining HTML tags
+sed 's/^[ \t]*//' | # Removes initial tab and space characters
+grep -v '^$'| # Removes all blank linkes
+tr -s '`' "'" | # Replaces grave accent with apostrophe
+sed '1d; n; d' | # Removes all odd (English words) lines
+tr ' ' '\n' | # Replaces space characters with new line ones
+tr ',' '\n' | # Replaces commas with new line characters
+grep -v '^$'| # Removes any introduced blank lines
+tr '[:upper:]' '[:lower:]' | # Converts all lower case letters to upper case
+sort -u | # Sorts the remaining words while also removing duplicates
+sed '/[^k^p^m^h^n^w^l^a^e^i^o^u^'\'']/d' # Removes lines that have characters outside of the Hawaiian alphabet
